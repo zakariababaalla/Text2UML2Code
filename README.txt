@@ -1,4 +1,4 @@
-README — Text2UML&Code
+README — Text2UML2Code
 Prompt-Guided Multi-LLM MDA Pipeline with DSL Stabilization
 ================================================================================
 
