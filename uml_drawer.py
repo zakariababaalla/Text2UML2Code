@@ -10,7 +10,7 @@ class UMLDiagramApp:
         self.class_positions = {}
 
     # --------------------------------------------
-    # 🧩 Étape 1 : Transformation DSL → Structure UML
+    # Étape 1 : Transformation DSL → Structure UML
     # --------------------------------------------
     def dsl_to_uml_data(self, dsl_text: str):
         uml_data = {"classes": [], "relations": []}
@@ -66,7 +66,7 @@ class UMLDiagramApp:
 
 
     # ==================================================
-    # 🔹 Fonction principale : dessin du diagramme UML
+    # Fonction principale : dessin du diagramme UML
     # ==================================================
     def draw_uml_diagram(self):
         """Draw UML classes and relationships on the canvas."""
@@ -165,15 +165,15 @@ class UMLDiagramApp:
         if not self.uml_data.get("relations"):
             return
 
-        vertical_offset = 3        # décalage entre relations verticales
-        horizontal_offset = 3      # décalage vertical entre relations horizontales superposées
-        same_level_threshold = 40   # tolérance pour considérer deux classes sur le même niveau horizontal
+        vertical_offset = 3        
+        horizontal_offset = 3      
+        same_level_threshold = 40   
         padding = 0
 
         unique_relations = set()
         filtered_relations = []
 
-        # 🔹 Éliminer les doublons
+        # Éliminer les doublons
         for relation in self.uml_data["relations"]:
             source = relation.get("source")
             target = relation.get("target")
@@ -187,7 +187,7 @@ class UMLDiagramApp:
                 unique_relations.add(key)
                 filtered_relations.append(relation)
 
-        # 🔹 Compter les connexions horizontales pour ajuster les décalages
+        # Compter les connexions horizontales pour ajuster les décalages
         horizontal_connections = {}
         for rel in filtered_relations:
             src = rel["source"]
@@ -199,7 +199,7 @@ class UMLDiagramApp:
                     key = tuple(sorted([src, tgt]))
                     horizontal_connections[key] = horizontal_connections.get(key, 0) + 1
 
-        # 🔹 Dessiner les relations
+        # Dessiner les relations
         for index, relation in enumerate(filtered_relations):
             source = relation["source"]
             target = relation["target"]
@@ -214,7 +214,7 @@ class UMLDiagramApp:
             src_x, src_y, src_w, src_h = src["x"], src["y"], src["width"], src["height"]
             tgt_x, tgt_y, tgt_w, tgt_h = tgt["x"], tgt["y"], tgt["width"], tgt["height"]
 
-            # 🔸 Coordonnées des centres
+            # Coordonnées des centres
             src_cx = src_x + src_w / 2
             src_cy = src_y + src_h / 2
             tgt_cx = tgt_x + tgt_w / 2
@@ -222,7 +222,7 @@ class UMLDiagramApp:
 
             same_level = abs(src_cy - tgt_cy) < same_level_threshold
 
-            # 🔹 Cas réflexif (classe reliée à elle-même)
+            # Cas réflexif (classe reliée à elle-même)
             if source == target:
                 top_left_x = src_x
                 top_left_y = src_y + src["name_height"]
@@ -251,7 +251,7 @@ class UMLDiagramApp:
                 )
                 continue
 
-            # === 🔹 HORIZONTALE ===
+            # === HORIZONTALE ===
             if same_level:
                 if src_cx < tgt_cx:
                     start_x = src_x + src_w - padding
@@ -263,7 +263,7 @@ class UMLDiagramApp:
                 start_y = src_cy
                 end_y = tgt_cy
 
-                # ✅ Décalage vertical intelligent pour éviter la superposition
+                # Décalage vertical intelligent pour éviter la superposition
                 key = tuple(sorted([source, target]))
                 relation_index = list(horizontal_connections.keys()).index(key) if key in horizontal_connections else 0
                 offset_dir = (-1)**relation_index  # alterne vers le haut/bas
@@ -271,7 +271,7 @@ class UMLDiagramApp:
                 start_y += y_shift
                 end_y += y_shift
 
-            # === 🔹 VERTICALE ===
+            # === VERTICALE ===
             else:
                 if src_cy < tgt_cy:
                     start_y = src_y + src_h - padding
@@ -283,7 +283,7 @@ class UMLDiagramApp:
                 start_x = src_cx + (index * vertical_offset)
                 end_x = tgt_cx + (index * vertical_offset)
 
-            # === 🔸 Dessin selon type ===
+            # === Dessin selon type ===
             if rel_type == "inheritance":
                 self.draw_triangle(start_x, start_y, end_x, end_y)
             elif rel_type == "association":
@@ -316,7 +316,7 @@ class UMLDiagramApp:
                                         text=rel_type, font=("Arial", 8, "italic"), fill="gray")
 
     # ==================================================
-    # 🔸 Formes pour les relations UML
+    # Formes pour les relations UML
     # ==================================================
     def draw_diamond(self, x: int, y: int, filled: bool = False):
         """Draw a diamond shape on the canvas."""
