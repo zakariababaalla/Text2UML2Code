@@ -29,7 +29,7 @@ class PipelineGUI(tk.Tk):
         
 
     # ----------------------------
-    # 🔹 Zone combinée : Spécifications + DSL
+    # Zone combinée : Spécifications + DSL
     # ----------------------------
     def create_spec_and_dsl_area(self):
         container = tk.Frame(self)
@@ -45,7 +45,7 @@ class PipelineGUI(tk.Tk):
         tk.Label(spec_header, text="📝", font=("Arial", 16, "bold"), fg="#505151").pack(side="left", padx=5)
         tk.Label(spec_header, text="Requirements", font=("Broadway", 12, "bold"), fg="#505151").pack(side="left", padx=0)
 
-        # --- 🔽 Zone de choix du modèle (placée entre Generate et Clear) ---
+        # --- Zone de choix du modèle (placée entre Generate et Clear) ---
         self.model_var = tk.StringVar(value="Select a model")
         model_list = ["phi3:mini", "llama3:8b", "deepseek-coder:6.7b","mistral:7b","gemma:2b","codellama:7b","neural-chat:7b"]
 
@@ -75,7 +75,6 @@ class PipelineGUI(tk.Tk):
 
         dsl_header = tk.Frame(dsl_frame)
         dsl_header.pack(fill="x", pady=(0, 0))
-        tk.Label(dsl_header, text="🧩", font=("Arial", 16, "bold"), fg="#505151").pack(side="left", padx=5)
         tk.Label(dsl_header, text="Structured DSL", font=("Broadway", 12, "bold"), fg="#505151").pack(side="left", padx=0)
         tk.Button(dsl_header, text="Save UML diagram", command=self.save_uml_as_png, width=15, height=1, font=("Arial", 9, "bold"), bg="steelblue", fg="white", activebackground="tomato", activeforeground="white").pack(side="right", padx=(2, 20))
 
@@ -94,7 +93,7 @@ class PipelineGUI(tk.Tk):
         dsl_container.grid_columnconfigure(0, weight=1)
 
     # ----------------------------
-    # 🔹 Zone UML
+    # Zone UML
     # ----------------------------
     def create_uml_canvas(self):
         frame = ttk.LabelFrame(self, padding=0)
@@ -103,7 +102,6 @@ class PipelineGUI(tk.Tk):
         # === Bouton placé AU-DESSUS du diagramme UML ===
         btn_frame = tk.Frame(frame)
         btn_frame.pack(fill="x", pady=(0, 0))  # marge en haut et en bas
-        #tk.Label(btn_frame, text="⚙️", font=("Arial", 16, "bold"), fg="#505151").pack(side="left", padx=5)
         #tk.Label(btn_frame, text="Generated UML diagram", font=("Broadway", 12, "bold"), fg="#505151").pack(side="left", padx=0)
         #tk.Button(btn_frame, text="Save UML class diagram", command=self.save_uml_as_png, width=20, height=1, font=("Arial", 9, "bold"), bg="dim gray", fg="white", activebackground="tomato", activeforeground="white").pack(side="right", padx=(2, 20))
 
@@ -121,7 +119,7 @@ class PipelineGUI(tk.Tk):
 
 
     # ----------------------------
-    # 🔹 Zone Code + Logs
+    # Zone Code + Logs
     # ----------------------------
     def create_code_and_logs(self):
         # === Zone Code généré ===
@@ -131,7 +129,6 @@ class PipelineGUI(tk.Tk):
         # En-tête avec label et boutons
         code_header = tk.Frame(code_frame)
         code_header.pack(fill="x", pady=(0, 0))
-        tk.Label(code_header, text="💻", font=("Arial", 16, "bold"), fg="#505151").pack(side="left", padx=5)
         tk.Label(code_header, text="Generated code", font=("Broadway", 12, "bold"), fg="#505151").pack(side="left", padx=0)
 
         tk.Button(code_header, text="Save code", command=self.save_code_to_file, width=10, height=1, font=("Arial", 9, "bold"), bg="steelblue", fg="white", activebackground="tomato", activeforeground="white").pack(side="right", padx=(2, 20))
@@ -156,7 +153,6 @@ class PipelineGUI(tk.Tk):
 
         log_header = tk.Frame(log_frame)
         log_header.pack(fill="x", pady=(0, 0))
-        tk.Label(log_header, text="🪶", font=("Arial", 16, "bold"), fg="#505151").pack(side="left", padx=5)
         tk.Label(log_header, text="Execution Log", font=("Broadway", 12, "bold"), fg="#505151").pack(side="left", padx=0)
         tk.Button(log_header, text="Save report", command=self.save_logs, width=10, height=1, font=("Arial", 9, "bold"), bg="steelblue", fg="white", activebackground="tomato", activeforeground="white").pack(side="right", padx=(2, 20))
 
@@ -170,7 +166,7 @@ class PipelineGUI(tk.Tk):
         log_scroll.config(command=self.log_box.yview)
 
     # =====================================================
-    # 🧩 Fonctions utilitaires
+    # Fonctions utilitaires
     # =====================================================
     def load_spec_file(self):
         """Load a .txt file into the specification area and clear all other areas automatically."""
@@ -179,7 +175,7 @@ class PipelineGUI(tk.Tk):
             return
 
         try:
-            # 🔹 Clear all areas before loading the new file
+            # Clear all areas before loading the new file
             self.spec_text.delete("1.0", tk.END)
             self.dsl_text.delete("1.0", tk.END)
             self.uml_canvas.delete("all")
@@ -188,7 +184,7 @@ class PipelineGUI(tk.Tk):
             self.log_box.delete("1.0", tk.END)
             self.log_box.config(state="disabled")
 
-            # 🔹 Load the selected file
+            # Load the selected file
             with open(file_path, "r", encoding="utf-8") as file:
                 content = file.read()
                 self.spec_text.insert("1.0", content)
@@ -201,7 +197,7 @@ class PipelineGUI(tk.Tk):
             
     def clear_all(self):
         """Clear all areas (specifications, DSL, UML, code, logs) with confirmation and safety checks."""
-        # 🔹 Check if all areas are already empty
+        # Check if all areas are already empty
         if (
             not self.spec_text.get("1.0", tk.END).strip()
             and not self.dsl_text.get("1.0", tk.END).strip()
@@ -216,7 +212,7 @@ class PipelineGUI(tk.Tk):
             self.log("ℹ️ Nothing to clear — all areas are empty.")
             return
 
-        # 🔹 Ask for confirmation
+        # Ask for confirmation
         confirm = messagebox.askyesno(
             "Confirm deletion",
             "Are you sure you want to clear all areas?\n\n"
@@ -227,19 +223,19 @@ class PipelineGUI(tk.Tk):
             self.log("❎ Clear action cancelled by user.")
             return
 
-        # 🔹 Clear all text and graphic zones
+        # Clear all text and graphic zones
         self.spec_text.delete("1.0", tk.END)
         self.dsl_text.delete("1.0", tk.END)
         self.uml_canvas.delete("all")
         self.code_text.delete("1.0", tk.END)
 
-        # 🔹 Clear the log box entirely
+        # Clear the log box entirely
         self.log_box.config(state="normal")
         self.log_box.delete("1.0", tk.END)
         self.log_box.config(state="disabled")
 
-        # 🔹 (Optional) Keep or remove the final log
-        # self.log("🧹 All areas have been cleared.")  # ⬅️ Retirer cette ligne si tu veux une zone logs 100% vide
+        # (Optional) Keep or remove the final log
+        # self.log("🧹 All areas have been cleared.") 
 
     
 
@@ -269,7 +265,7 @@ class PipelineGUI(tk.Tk):
             width = x2 - x1
             height = y2 - y1
 
-            # 🔸 Générer un fichier PostScript temporaire à taille réelle
+            # Générer un fichier PostScript temporaire à taille réelle
             with tempfile.NamedTemporaryFile(delete=False, suffix=".ps") as tmpfile:
                 ps_path = tmpfile.name
                 self.uml_canvas.postscript(
@@ -283,7 +279,7 @@ class PipelineGUI(tk.Tk):
                     pageheight=height - 1
                 )
 
-            # 🔸 Charger le PostScript et convertir en image réelle
+            # Charger le PostScript et convertir en image réelle
             image = Image.open(ps_path)
 
             # Forcer la mise à l’échelle correcte (conversion points → pixels)
@@ -305,7 +301,7 @@ class PipelineGUI(tk.Tk):
             messagebox.showwarning("Error", "No code to save.")
             return
 
-        # 🔹 Choix de l’extension selon le type de code sélectionné
+        # Choix de l’extension selon le type de code sélectionné
         selected_lang = getattr(self, "selected_language", "Python")  # suppose que tu as une variable qui stocke le langage choisi
         extensions = {
             "Python": ".py",
@@ -336,7 +332,7 @@ class PipelineGUI(tk.Tk):
 
             self.log(f"💾 Code saved in: {file_path}")
 
-            # 🔹 Boîte de confirmation finale
+            # Boîte de confirmation finale
             messagebox.showinfo(
                 "Save successful",
                 f"The code has been successfully saved in:\n{os.path.basename(file_path)}"
@@ -348,7 +344,7 @@ class PipelineGUI(tk.Tk):
 
 
     # =====================================================
-    # ⚙️ Étapes du pipeline
+    # Étapes du pipeline
     # =====================================================
     def generate_dsl(self):
         """Generate DSL from specifications and clear previous outputs (DSL, UML, Code, Logs)."""
@@ -357,17 +353,17 @@ class PipelineGUI(tk.Tk):
             messagebox.showwarning("Error", "Please enter textual specifications.")
             return
 
-        # 🔹 Récupération du modèle sélectionné
+        # Récupération du modèle sélectionné
         selected_model = self.model_var.get().strip() if hasattr(self, "model_var") else ""
 
-        # 🔸 Vérification : modèle sélectionné ?
+        # Vérification : modèle sélectionné ?
         invalid_choices = {"", "select model", "select a model", "choose model", "choose a model"}
         if selected_model.lower() in invalid_choices:
             messagebox.showwarning("Model not selected", "Please select a model before generating the DSL.")
             self.log("⚠️ No model selected. DSL generation canceled.")
             return
 
-        # 🔹 Nettoyage des zones
+        # Nettoyage des zones
         self.dsl_text.delete("1.0", tk.END)
         self.uml_canvas.delete("all")
         self.code_text.delete("1.0", tk.END)
@@ -378,10 +374,10 @@ class PipelineGUI(tk.Tk):
         self.log(f"☁️ Sending text to cloud model ({selected_model})...")
 
         try:
-            # ✅ Génération du DSL avec le modèle choisi
+            # Génération du DSL avec le modèle choisi
             dsl_result = get_dsl_from_spec(spec_text, selected_model)
 
-            # 🔍 Vérifier la réponse du serveur
+            # Vérifier la réponse du serveur
             if not dsl_result or not dsl_result.strip():
                 error_msg = (
                     "❌ Error: No response received from the cloud model.\n"
@@ -393,7 +389,7 @@ class PipelineGUI(tk.Tk):
                 self.log("❌ Cloud model returned an empty or invalid response.")
                 return
 
-            # ✅ Afficher le résultat si valide
+            # Afficher le résultat si valide
             self.dsl_text.insert("1.0", dsl_result)
             self.highlight_dsl()
 
@@ -420,7 +416,7 @@ class PipelineGUI(tk.Tk):
 
         self.log("🔎 Checking DSL or JSON structure...", level="info")
 
-        # --- 🧩 Try to detect if the content is JSON ---
+        # --- Try to detect if the content is JSON ---
         is_json = False
         parsed_content = None
         try:
@@ -502,7 +498,7 @@ class PipelineGUI(tk.Tk):
         self.log("☁️ Sending UML model (PIM) to cloud model for code generation...")
 
         try:
-            # ✅ Vérifier la présence du modèle UML
+            # Vérifier la présence du modèle UML
             if (
                 not hasattr(self.uml_app, "uml_data") 
                 or not self.uml_app.uml_data
@@ -516,14 +512,14 @@ class PipelineGUI(tk.Tk):
                 self.log("⚠️ UML area is empty. Code generation canceled.")
                 return
 
-            # ✅ Récupérer le langage choisi
+            # Récupérer le langage choisi
             lang = self.language_var.get().strip()
             if lang in ("", "Select programming language"):
                 messagebox.showwarning("Missing language", "Please select a programming language before generating code.")
                 self.log("⚠️ No language selected. Code generation canceled.")
                 return
 
-            # ✅ Récupérer le modèle cloud choisi
+            # Récupérer le modèle cloud choisi
             selected_model = self.model_var.get().strip()
             invalid_models = {"", "select model", "select a model", "choose model", "choose a model"}
             if selected_model.lower() in invalid_models:
@@ -531,13 +527,13 @@ class PipelineGUI(tk.Tk):
                 self.log("⚠️ No model selected. Code generation canceled.")
                 return
 
-            # ✅ Conversion UML → DSL
+            # Conversion UML → DSL
             uml_dsl = self.uml_app.uml_data_to_dsl()
 
-            # ✅ Appel au modèle cloud
+            # Appel au modèle cloud
             code = get_code_from_uml(uml_dsl, language=lang, model_name=selected_model)
 
-            # ✅ Nettoyage avant affichage
+            # Nettoyage avant affichage
             self.code_text.delete("1.0", tk.END)
 
             # --- Vérification du résultat ---
@@ -553,7 +549,7 @@ class PipelineGUI(tk.Tk):
                 messagebox.showerror("Cloud Error", "No response received from the model.")
                 return
 
-            # ✅ Si le code contient explicitement une erreur détectée
+            # Si le code contient explicitement une erreur détectée
             if "error" in code.lower() or "exception" in code.lower():
                 self.code_text.insert("1.0", code)
                 self.code_text.tag_add("error", "1.0", "end")
@@ -561,13 +557,13 @@ class PipelineGUI(tk.Tk):
                 self.log("❌ The model returned an error message during code generation.")
                 return
 
-            # ✅ Sinon, affichage du code généré et coloration syntaxique
+            # Sinon, affichage du code généré et coloration syntaxique
             self.code_text.insert("1.0", code)
             self.highlight_code(lang)
             self.log(f"✅ {lang} code successfully generated using model: {selected_model}.")
 
         except Exception as e:
-            # 🔴 Gestion globale des erreurs
+            # Gestion globale des erreurs
             error_msg = f"❌ Code generation error: {e}"
             self.code_text.delete("1.0", tk.END)
             self.code_text.insert("1.0", error_msg)
@@ -649,7 +645,7 @@ class PipelineGUI(tk.Tk):
         if not file_path:
             return
 
-        # 🔹 Clear other areas BEFORE loading DSL
+        # Clear other areas BEFORE loading DSL
         self.spec_text.delete("1.0", tk.END)
         self.uml_canvas.delete("all")
         self.code_text.delete("1.0", tk.END)
@@ -661,7 +657,7 @@ class PipelineGUI(tk.Tk):
             with open(file_path, "r", encoding="utf-8") as f:
                 content = f.read()
 
-            # 🔹 If it's a JSON file, extract the DSL text if possible
+            # If it's a JSON file, extract the DSL text if possible
             if file_path.endswith(".json"):
                 import json
                 data = json.loads(content)
@@ -671,7 +667,7 @@ class PipelineGUI(tk.Tk):
                     elif "dsl_content" in data:  # compatibilité avec ton format précédent
                         content = data["dsl_content"]
 
-            # 🔹 Insert DSL into the DSL text zone
+            # Insert DSL into the DSL text zone
             self.dsl_text.delete("1.0", tk.END)
             self.dsl_text.insert("1.0", content)
             self.log(f"📂 DSL loaded from: {file_path}")
@@ -762,11 +758,11 @@ class PipelineGUI(tk.Tk):
         """Coloration syntaxique simple pour le DSL UML affiché."""
         text_widget = self.dsl_text
 
-        # 1️⃣ Nettoyage des anciens tags
+        # 1️--Nettoyage des anciens tags
         for tag in text_widget.tag_names():
             text_widget.tag_delete(tag)
 
-        # 2️⃣ Définir les styles de coloration
+        # 2--Définir les styles de coloration
         colors = {
             "keyword": "#0077cc",   # Bleu pour Class, Relation
             "section": "#cc5500",   # Orange pour Attributes / Methods
@@ -780,10 +776,10 @@ class PipelineGUI(tk.Tk):
         for tag, color in colors.items():
             text_widget.tag_config(tag, foreground=color, font=("Arial", 11, "normal" if tag in ["keyword", "section"] else "normal"))
 
-        # 3️⃣ Récupérer le texte complet
+        # 3️--Récupérer le texte complet
         dsl_text = text_widget.get("1.0", "end-1c")
 
-        # 4️⃣ Coloration par expressions régulières
+        # 4️--Coloration par expressions régulières
 
         # Mots-clés principaux
         for match in re.finditer(r"\b(Class|Relation)\b", dsl_text):
@@ -811,16 +807,16 @@ class PipelineGUI(tk.Tk):
 
 
     # --------------------------------------------
-    # 🎨 Coloration syntaxique multi-langage
+    # Coloration syntaxique multi-langage
     # --------------------------------------------
     def highlight_code(self, lang: str):
         """Applique une coloration syntaxique simple selon le langage choisi."""
 
-        # 1️⃣ Nettoyer les tags existants
+        # 1️--Nettoyer les tags existants
         for tag in self.code_text.tag_names():
             self.code_text.tag_delete(tag)
 
-        # 2️⃣ Définir les couleurs selon le langage
+        # 2️--Définir les couleurs selon le langage
         colors = {
             "keyword": "#0077cc",   # Bleu pour mots-clés
             "string": "#008000",    # Vert pour chaînes
@@ -833,10 +829,10 @@ class PipelineGUI(tk.Tk):
         for tag, color in colors.items():
             self.code_text.tag_config(tag, foreground=color)
 
-        # 3️⃣ Récupérer le texte
+        # 3️--Récupérer le texte
         code = self.code_text.get("1.0", "end-1c")
 
-        # 4️⃣ Définir les règles par langage
+        # 4️--Définir les règles par langage
         if lang.lower() == "python":
             keywords = r"\b(False|class|finally|is|return|None|continue|for|lambda|try|True|def|from|nonlocal|while|and|del|global|not|with|as|elif|if|or|yield|assert|else|import|pass|break|except|in|raise)\b"
             comment = r"#.*"
@@ -854,7 +850,7 @@ class PipelineGUI(tk.Tk):
         else:
             return  # Aucun langage connu → pas de coloration
 
-        # 5️⃣ Appliquer la coloration avec regex
+        # 5️--Appliquer la coloration avec regex
         for match in re.finditer(keywords, code):
             self.code_text.tag_add("keyword", f"1.0+{match.start()}c", f"1.0+{match.end()}c")
 
