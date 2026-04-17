@@ -3,7 +3,7 @@ import json
 import re
 import requests
 # ===============================
-# ⚙️ Fonction pour interroger Ollama
+# Fonction pour interroger Ollama
 # ===============================
 
 def query_ollama(prompt, model="phi3:mini", host="http://localhost:11434"):
@@ -22,7 +22,7 @@ def query_ollama(prompt, model="phi3:mini", host="http://localhost:11434"):
         return f"⚠️ Erreur inattendue : {ex}"
     
 # ===============================
-# 🧹 Filtrage intelligent du DSL généré
+# Filtrage intelligent du DSL généré
 # ===============================
 def clean_generated_dsl(dsl: str) -> str:
     """
@@ -45,12 +45,12 @@ def clean_generated_dsl(dsl: str) -> str:
         if not line:
             continue
 
-        # 🔹 Supprimer les commentaires et phrases narratives
+        # Supprimer les commentaires et phrases narratives
         line = re.sub(r"//.*", "", line)
         line = re.sub(r"#.*", "", line)
         line = re.sub(r"\s*(However|This relation|Since the specification|For example|Similarly).*", "", line, flags=re.IGNORECASE)
 
-        # 🔹 Identifier la section actuelle
+        # Identifier la section actuelle
         if line.lower().startswith("class "):
             current_section = "class"
         elif line.lower().startswith("attributes"):
@@ -60,7 +60,7 @@ def clean_generated_dsl(dsl: str) -> str:
         elif line.lower().startswith("relation"):
             current_section = "relation"
 
-        # 🔹 Normalisation douce des balises
+        # Normalisation douce des balises
         line = re.sub(r"^class\b", "Class", line, flags=re.IGNORECASE)
         line = re.sub(r"^attributes\b", "Attributes", line, flags=re.IGNORECASE)
         line = re.sub(r"^methods\b", "Methods", line, flags=re.IGNORECASE)
@@ -99,7 +99,7 @@ def clean_generated_dsl(dsl: str) -> str:
         if line:
             lines.append(line.strip())
 
-    # 🔹 Nettoyage final (espaces, doublons, retours multiples)
+    # Nettoyage final (espaces, doublons, retours multiples)
     cleaned_dsl = "\n".join(dict.fromkeys(lines))  # supprime les doublons tout en gardant l’ordre
     cleaned_dsl = re.sub(r"\n{3,}", "\n\n", cleaned_dsl).strip()
 
@@ -117,15 +117,15 @@ def ensure_all_classes_exist(dsl: str) -> str:
     if not dsl or not isinstance(dsl, str):
         return dsl
 
-    # --- 1️⃣ Extraire toutes les classes déjà définies ---
+    # --- 1️ --- Extraire toutes les classes déjà définies ---
     defined_classes = set(re.findall(r'\bClass\s+(\w+)\s*:', dsl))
 
-    # --- 2️⃣ Extraire toutes les classes mentionnées dans les relations ---
+    # --- 2️ --- Extraire toutes les classes mentionnées dans les relations ---
     related_classes = set()
     for match in re.findall(r'Relation:\s*(\w+)\s+\w+\s+(\w+)', dsl):
         related_classes.update(match)
 
-    # --- 3️⃣ Liste de mots réservés / noms non valides ---
+    # --- 3️ --- Liste de mots réservés / noms non valides ---
     invalid_class_names = {
         "class", "relation", "relations", "attribute", "attributes",
         "method", "methods", "composition", "aggregation", "association",
@@ -133,7 +133,7 @@ def ensure_all_classes_exist(dsl: str) -> str:
         "entity", "object", "model", "none"
     }
 
-    # --- 4️⃣ Identifier les classes manquantes et valides ---
+    # --- 4️ --- Identifier les classes manquantes et valides ---
     missing_classes = set()
     for cls in related_classes:
         cls_lower = cls.lower()
@@ -146,7 +146,7 @@ def ensure_all_classes_exist(dsl: str) -> str:
             continue  # mot-clé réservé
         missing_classes.add(cls)
 
-    # --- 5️⃣ Ajouter les classes manquantes ---
+    # --- 5️ --- Ajouter les classes manquantes ---
     if missing_classes:
         additions = "\n\n".join([
             f"Class {cls}:\n    Attributes:\n    Methods:" for cls in sorted(missing_classes)
@@ -180,7 +180,7 @@ def check_dsl_structure(dsl_text: str) -> list:
         if not line or line.startswith("#"):
             continue
 
-        # ✅ Valid patterns
+        # Valid patterns
         if valid_class_pattern.match(line):
             continue
 
@@ -200,7 +200,7 @@ def check_dsl_structure(dsl_text: str) -> list:
             continue
 
         else:
-            # ❌ Unknown structure
+            # Unknown structure
             issues.append(f"❌ Line {idx}: Invalid DSL structure → '{line}'")
 
     if not issues:
@@ -212,7 +212,7 @@ def check_dsl_structure(dsl_text: str) -> list:
 
 
 # ===============================
-# 🧩 Étape 1 : Spécifications → DSL
+# Étape 1 : Spécifications → DSL
 # ===============================
 def get_dsl_from_spec(spec_text, model_name="phi3:mini"):
     prompt = f"""
@@ -330,12 +330,12 @@ def get_dsl_from_spec(spec_text, model_name="phi3:mini"):
 
     ---
 
-    ### 🚫 Interdictions
-    - ❌ Aucun commentaire (`//`, `#`, `/* */`...).
-    - ❌ Aucune phrase narrative.
-    - ❌ Aucune cardinalité (`1..*`, `n`, etc.).
-    - ❌ Aucune ponctuation superflue.
-    - ❌ Aucun mot hors DSL.
+    ### Interdictions
+    - Aucun commentaire (`//`, `#`, `/* */`...).
+    - Aucune phrase narrative.
+    - Aucune cardinalité (`1..*`, `n`, etc.).
+    - Aucune ponctuation superflue.
+    - Aucun mot hors DSL.
 
     ---
 
@@ -350,16 +350,16 @@ def get_dsl_from_spec(spec_text, model_name="phi3:mini"):
     """
 
     
-    # ✅ Exécution sur le serveur Ollama distant avec le modèle choisi
+    # Exécution sur le serveur Ollama distant avec le modèle choisi
     raw_dsl = query_ollama(prompt, model=model_name, host="http://localhost:11434")
 
-    # ✅ Nettoyage et validation
+    # Nettoyage et validation
     cleaned_dsl = clean_generated_dsl(raw_dsl)
     final_dsl = ensure_all_classes_exist(cleaned_dsl)
 
     return final_dsl
 # ===============================
-# 🧩 Étape 2 : UML → Code Python
+# Étape 2 : UML → Code Python
 # ===============================
 def get_code_from_uml(uml_description, language="Python", model_name="phi3:mini"):
     """
@@ -379,7 +379,7 @@ def get_code_from_uml(uml_description, language="Python", model_name="phi3:mini"
     {uml_description}
     """
 
-    # ✅ Envoi du prompt au modèle choisi
+    # Envoi du prompt au modèle choisi
     raw_code = query_ollama(prompt, model=model_name, host="http://localhost:11434")
 
     return raw_code.strip()
