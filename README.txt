@@ -4,7 +4,7 @@ Prompt-Guided Multi-LLM MDA Pipeline with DSL Stabilization
 
 1) Overview
 -----------
-This third contribution introduces a robust Model-Driven Architecture (MDA)
+This contribution introduces a robust Model-Driven Architecture (MDA)
 pipeline that transforms textual software specifications into UML class diagrams
 and executable code using a multi-LLM orchestration strategy.
 
